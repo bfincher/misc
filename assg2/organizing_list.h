@@ -51,6 +51,10 @@ public:
 		return lst.end();
 	}
 
+	int size() {
+		return lst.size();
+	}
+
 	void print() {
 		for (auto itr = begin(); itr != end(); itr++) {
 			std::cout << *itr << std::endl;

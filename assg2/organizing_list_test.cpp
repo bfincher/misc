@@ -1,25 +1,37 @@
 #include "organizing_list.h"
 #include <string>
+#include "gtest/gtest.h"
 
 using namespace std;
 
-int mainn() {
-	SelfOrganizingList<string> lst;
+TEST(OrganizingListTest, Test) {
+	SelfOrganizingList<int> lst;
 
-	lst.push_back("a");
-	lst.push_back("b");
-	lst.push_back("c");
-	lst.push_back("d");
-	lst.print();
-	cout << endl << endl;
+	lst.push_back(1);
+	lst.push_back(2);
+	lst.push_back(3);
+	lst.push_back(4);
 
-	lst.moveToFront("c");
-	lst.print();
-	cout << endl << endl;
+	ASSERT_EQ(4, lst.size());
+	auto itr = lst.begin();
+	ASSERT_EQ(1, *itr++);
+	ASSERT_EQ(2, *itr++);
+	ASSERT_EQ(3, *itr++);
+	ASSERT_EQ(4, *itr++);
 
-	lst.moveToFront("d");
-	lst.print();
+	lst.moveToFront(3);
+	itr = lst.begin();
+	ASSERT_EQ(3, *itr++);
+	ASSERT_EQ(1, *itr++);
+	ASSERT_EQ(2, *itr++);
+	ASSERT_EQ(4, *itr++);
+
+	lst.moveToFront(4);
+	itr = lst.begin();
+	ASSERT_EQ(4, *itr++);
+	ASSERT_EQ(3, *itr++);
+	ASSERT_EQ(1, *itr++);
+	ASSERT_EQ(2, *itr++);
+
 }
-
-
 
