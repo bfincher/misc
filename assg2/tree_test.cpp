@@ -1,13 +1,13 @@
-
+#include "gtest/gtest.h"
 #include "Tree.h"
 #include <stdlib.h>
 #include <set>
 
-int mainnn() {
+TEST(TreeTest, Test) {
 	// Code referenced from https://cplusplus.com/reference/cstdlib/rand/
 	Tree<int> tree;
 
-	srand (time(NULL));
+	srand(time(NULL));
 	std::set<int> integers;
 
 	for (int i = 0; i < 1000; i++) {
@@ -16,17 +16,9 @@ int mainnn() {
 		tree.insert(x);
 	}
 
-	tree.print();
-
 	// now search for the inserted integers
-	for (int i: integers) {
-		if (!tree.search(i)) {
-			std::cout << "couldn't find " << i << std::endl;
-			return 0;
-		}
+	for (int i : integers) {
+		ASSERT_TRUE(tree.search(i));
 	}
 }
-
-
-
 

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <list>
+#include <vector>
 
 class Card {
 private:
@@ -10,34 +11,23 @@ private:
 	std::string keyword;
 
 public:
-	Card(int index, std::string keyword) :
-			index(index), keyword(keyword) {
-	}
+	Card(int index, std::string keyword);
 
-	Card(const Card &other) :
-			index(other.index), keyword(other.keyword) {
-	}
+	Card(const Card &other);
 
-	~Card() {
-	}
+	~Card();
 
-	Card& operator=(const Card &other) {
-		index = other.index;
-		keyword = other.keyword;
-		return *this;
-	}
+	int getIndex() const;
 
-	bool operator==(const Card &other) const {
-		return index == other.index && keyword == other.keyword;
-	}
+	std::string getKeyword() const;
 
-	bool operator<(const Card &other) const {
-		return index < other.index;
-	}
+	Card& operator=(const Card &other);
 
-	bool operator>(const Card &other) const {
-		return index > other.index;
-	}
+	bool operator==(const Card &other) const;
+
+	bool operator<(const Card &other) const;
+
+	bool operator>(const Card &other) const;
 
 	friend std::ostream& operator<<(std::ostream &os, const Card &dt) {
 		os << dt.index << " -> " << dt.keyword;
@@ -47,39 +37,34 @@ public:
 
 class IndexCards {
 private:
-	std::list<Card> cards;
+	std::list<Card> cardsByIndex;
+	std::list<Card> cardsByKeyword;
+
+	void insertByIndex(Card card);
+	void insertByKeyword(Card card);
+	void print(std::list<Card> theList);
+	std::vector<Card> toVector(std::list<Card> theList);
+	void removeCard(std::list<Card> &cards, Card card);
 
 public:
-	IndexCards() {
-	}
+	IndexCards();
 
-	IndexCards(const IndexCards &other) :
-			cards(other.cards) {
-	}
+	IndexCards(const IndexCards &other);
 
-	~IndexCards() {
-	}
+	~IndexCards();
 
-	IndexCards& operator=(const IndexCards &other) {
-		cards = other.cards;
-		return *this;
-	}
+	IndexCards& operator=(const IndexCards &other);
 
-	void insert(Card card) {
-		for (auto itr = cards.begin(); itr != cards.end(); itr++) {
-			if (card < *itr) {
-				cards.insert(itr, card);
-				return;
-			}
-		}
+	void insert(Card card);
 
-		cards.push_back(card);
-	}
+	void printByIndex();
 
-	void print() {
-		for (auto itr = cards.begin(); itr != cards.end(); itr++) {
-			std::cout << *itr << std::endl;
-		}
-	}
+	void printByKeyword();
+
+	std::vector<Card> getByIndex();
+
+	std::vector<Card> getByKeyword();
+
+	void removeCard(Card card);
 
 };
