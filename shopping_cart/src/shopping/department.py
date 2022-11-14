@@ -9,7 +9,7 @@ class Entity:
     def exit(self, customer):
         self.customers.remove(customer)
     
-    def customers(self):
+    def getCustomers(self):
         return self.customers
 
 class Department(Entity):

@@ -1,6 +1,7 @@
 from department import Entity
 from item_list import ItemList
 
+
 class Store(Entity):
     def __init__(self, name):
         Entity.__init__(self, name)
@@ -12,7 +13,7 @@ class Store(Entity):
     def getWishList(self):
         return ItemList()
     
-    def departments(self):
+    def getDepartments(self):
         return self.departments
     
     def addDepartment(self, department):
