@@ -1,0 +1,38 @@
+from department import Department
+
+nextDepartmentId = 1
+nextItemId = 1
+
+def createDepartment(name):
+    global nextDepartmentId
+    dept = Department(name, nextDepartmentId)
+    nextDepartmentId += 1
+    return dept
+    
+def createItem(name, departmentId, price):
+    global nextItemId
+    item = Item(name, nextItemId, departmentId, price)
+    nextItemId += 1
+    
+def initialize():
+    books = createDepartment("Books")
+    music = createDepartment("Music")
+    software = createDepartment("Software")
+    video = createDepartment("Video")
+    
+    books.addItem(createItem("Bailees favorite book 1", books.departmentId, 9.99))
+    books.addItem(createItem("Bailees favorite book 2", books.departmentId, 12.95))
+    books.addItem(createItem("Bailees favorite book 3", books.departmentId, 8.98))
+    
+    music.addItem(createItem("Bailees favorite song 1", music.departmentId, .99))
+    music.addItem(createItem("Bailees favorite song 2", music.departmentId, .99))
+    music.addItem(createItem("Bailees favorite albulm 1", music.departmentId, .12.16))
+    
+    software.addItem(createItem("FincherNet Ultimate", software.departmentId, 1200.00))
+    software.addItem(createItem("Microsoft Office", software.departmentId, 99.99))
+    software.addItem(createItem("FincherNet Ultimate Pro", software.departmentId, 9000.00))
+    
+    video.addItem(createItem("Bailees favorite movie 1", video.departmentId, 9.99))
+    video.addItem(createItem("Bailees favorite movie 2", video.departmentId, 11.00))
+    video.addItem(createItem("Bailees favorite movie 3", video.departmentId, 8.95))
+    

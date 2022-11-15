@@ -4,6 +4,6 @@ class Customer:
         self.name = name
         self.shoppingCart = None
         self.wishList = None
-        self.department = None
+        self.departmentId = None
 
         

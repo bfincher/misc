@@ -1,4 +1,4 @@
-from department import Entity
+from department import Department, Entity
 from item_list import ItemList
 
 

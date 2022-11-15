@@ -1,10 +1,10 @@
 class Entity:
     def __init__(self, name):
         self.name = name
-        self.customers = []
+        self.customers = set(())
         
     def enter(self, customer):
-        self.customers.append(customer);
+        self.customers.add(customer);
         
     def exit(self, customer):
         self.customers.remove(customer)
@@ -18,6 +18,17 @@ class Department(Entity):
         self.departmentId = departmentId
         self.items = []
         self.observers = []
+        
+    def enter(self, customer):
+        Entity.enter(self, customer)
+        customer.departmentId = self.departmentId
+        
+    def exit(self, customer):
+        Entity.exit(self, customer)
+        customer.departmentId = None
+        
+    def addItem(self, item):
+        self.items.append(item)
         
     def items(self):
         return self.items
