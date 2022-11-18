@@ -36,10 +36,10 @@ class Department(Entity):
         for observer in self.observers:
             observer.priceChangeNotification(item)
         
-    def items(self):
+    def getItems(self):
         return self.items
     
-    def observers(self):
+    def getObservers(self):
         return self.observers
     
     def addObserver(self, observer):

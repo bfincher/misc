@@ -1,5 +1,6 @@
+from customer import Customer
 from department import Department
-from store import Store
+from item import Item
 
 nextDepartmentId = 1
 nextItemId = 1
@@ -14,6 +15,7 @@ def createItem(name, departmentId, price):
     global nextItemId
     item = Item(name, nextItemId, departmentId, price)
     nextItemId += 1
+    return item
     
 def initialize():
     books = createDepartment("Books")
@@ -37,9 +39,8 @@ def initialize():
     video.addItem(createItem("Bailees favorite movie 2", video, 11.00))
     video.addItem(createItem("Bailees favorite movie 3", video, 8.95))
     
-    store = Store("Bailee-Mart")
-    store.addDepartment(books);
-    store.addDepartment(music);
-    store.addDepartment(software)
-    store.addDepartment(video)
+    departments = [books, music, software, video]
+    customers = [Customer("Fred"), Customer("Wilma"), Customer("Barney"), Customer("Betty")]
+    
+    return (departments, customers)
     

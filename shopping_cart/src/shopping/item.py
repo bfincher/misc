@@ -16,8 +16,8 @@ class ItemList:
     def addItem(self, item):
         self.items.append(item)
         
-    def removeItem(self, item):
-        self.items.remove(item)
+    def removeItemAtIndex(self, itemIndex):
+        del self.items[itemIndex]
         
     def getItems(self):
         return self.items
