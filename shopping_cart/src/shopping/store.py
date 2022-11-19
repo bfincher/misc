@@ -89,25 +89,18 @@ def displayItem(item, customer):
         elif choice == 3:
             return
         
-def viewItems(department, customer):
-    items = department.getItems()
-    numItems = len(items)
-    print(f"BKF numItems = {numItems}, {items}")
-    exitOption = numItems + 1
-    choice = 0
-    while choice != exitOption:
+def selectItem(department):
+    while True:
+        items = department.getItems()
+        numItems = len(items)
         print()
         for i in range(numItems):
             print(f"    {i+1}:    {items[i].name}    {items[i].price}")
-        print(f"    {exitOption}:  Exit")
         choice = int(input("Please make a selection:"))
-        if choice == exitOption:
-            return
-        
+            
         idx = choice - 1
         if idx < numItems:
-            item = items[idx]
-            displayItem(item, customer)
+            return items[idx]
             
 def viewItemList(itemList, customerName, listType):
     choice = 0
@@ -152,7 +145,8 @@ def displayDepartmentMenu(department, customer):
         choice = int(input("Please make a selection: "))
         
         if choice == 1:
-            viewItems(department, customer)
+            item = selectItem(department)
+            displayItem(item, customer)
         elif choice == 2:
             viewItemList(customer.getShoppingCart(), customer.name, "Shopping Cart")
         elif choice == 3:
@@ -198,20 +192,26 @@ def displayStoreMenu(store, customer):
     
 def displayAdminMenu(store):
     choice = ''
-    while choice != '2':
+    while choice != '3':
         totalSalesFormatted = '${:,.2f}'.format(store.totalSales)
         print(f"\n{store.name} Administration.  Total sales = {totalSalesFormatted}")
         print("   1. Add Item")
-        print("   2. Exit")
+        print("   2. Change Item Price")
+        print("   3. Exit")
         choice = input("Please make a selection: ")
         
-        if choice == '1':
+        if choice == '1' or choice == '2':
             department = selectDepartment(store, "Select the department for the new item: ")
             if department:
-                itemName = input("Item name: ")
-                price = float(input("Item price: "))
-                newItem = Item.createItem(itemName, department, price)
-                department.addItem(newItem)
+                if choice == '1':
+                    itemName = input("Item name: ")
+                    price = float(input("Item price: "))
+                    newItem = Item.createItem(itemName, department, price)
+                    department.addItem(newItem)
+                else:
+                    item = selectItem(department)
+                    newPrice = input(f"Enter the new price for {item.name}: ")
+                    item.changePrice(newPrice)
             
 def displayStoreWelcomeMenu(store, customers):
     choice = ''
