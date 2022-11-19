@@ -1,6 +1,6 @@
 from customer import Customer
 from department import Department, Entity
-from item import ItemList
+from item import ItemList, Item
 import initial_data
 
 
@@ -24,7 +24,7 @@ class Store(Entity):
         
     def exit(self, customer):
         Entity.exit(self, customer)
-        if customer.shoppingCart:
+        if customer.shoppingCart.getItems():
             print(f"Checking out customer {customer.name}")
             print("Items purchased:")
             total = 0
@@ -32,7 +32,9 @@ class Store(Entity):
                 print(f"    {item.name} ${item.price}")
                 total += item.price
             
-            print(f"Total = {total}")
+            totalFormatted = '${:,.2f}'.format(total)
+            print(f"Total = {totalFormatted}")
+            
             self.totalSales += total
             
 def selectCustomer(customers):
@@ -137,14 +139,16 @@ def viewItemList(itemList, customerName, listType):
     
         
 def displayDepartmentMenu(department, customer):
+    department.enter(customer)
     choice = 0
-    while choice != 4:
+    while choice != 5:
         print()
         print(f"{customer.name}, Welcome to the {department.name} department!")
         print("    1. View Items")
         print("    2. View Shopping Cart")
         print("    3. View Wish List")
-        print("    4. Exit Department")
+        print("    4. Register for Item Notifications")
+        print("    5. Exit Department")
         choice = int(input("Please make a selection: "))
         
         if choice == 1:
@@ -153,8 +157,12 @@ def displayDepartmentMenu(department, customer):
             viewItemList(customer.getShoppingCart(), customer.name, "Shopping Cart")
         elif choice == 3:
             viewItemList(customer.getWishList(), customer.name, "Wish List")
-        
-def displayStoreMenu(store, customer):
+        elif choice == 4:
+            department.addObserver(customer)
+            
+    department.exit(customer)
+            
+def selectDepartment(store, message="Please make a selection: "):
     departments = store.getDepartments()
     numDepartments = len(departments)
     exitOption = numDepartments + 1
@@ -165,35 +173,64 @@ def displayStoreMenu(store, customer):
         for i in range(numDepartments):
             print(f"    {i+1}.  {departments[i].name}")
         print(f"    {exitOption}.  Exit")
-        choice = int(input("Please make a selection: "))
+        choice = int(input(message))
         if choice == exitOption:
             return
         
         idx = choice - 1
         if idx < numDepartments:
             department = departments[idx]
+            return department
+        
+    return None
+        
+def displayStoreMenu(store, customer):
+    store.enter(customer)
+    print(f"\nWelcome {customer.name}!")
+    while True:
+        department = selectDepartment(store)
+        if department:
             displayDepartmentMenu(department, customer)
+        else:
+            break
+            
+    store.exit(customer)
     
+def displayAdminMenu(store):
+    choice = ''
+    while choice != '2':
+        totalSalesFormatted = '${:,.2f}'.format(store.totalSales)
+        print(f"\n{store.name} Administration.  Total sales = {totalSalesFormatted}")
+        print("   1. Add Item")
+        print("   2. Exit")
+        choice = input("Please make a selection: ")
+        
+        if choice == '1':
+            department = selectDepartment(store, "Select the department for the new item: ")
+            if department:
+                itemName = input("Item name: ")
+                price = float(input("Item price: "))
+                newItem = Item.createItem(itemName, department, price)
+                department.addItem(newItem)
             
 def displayStoreWelcomeMenu(store, customers):
     choice = ''
-    while choice != '3':
+    while choice != '4':
         print(f"\n\nWelcome to {store.name}")
         print("    1.  Existing Customer")
         print("    2.  New Customer")
-        print("    3.  Exit")
+        print("    3.  Administration")
+        print("    4.  Exit")
         choice = input("Please make a selection: ")
         
         if choice == '1':
             customer = selectCustomer(customers)
-            print(f"\nWelcome {customer.name}!")
             displayStoreMenu(store, customer)
         elif choice == '2':
             customer = newCustomer(customers)
-            print(f"\nWelcome {customer.name}!")
             displayStoreMenu(store, customer)
         elif choice == '3':
-            return
+            displayAdminMenu(store)
     
 def main():
     initialData = initial_data.initialize()

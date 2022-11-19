@@ -1,4 +1,12 @@
 class Item:
+    nextItemId = 1
+    
+    @classmethod
+    def createItem(cls, name, department, price):
+        item = Item(name, Item.nextItemId, department, price)
+        Item.nextItemId += 1
+        return item
+        
     def __init__(self, name, itemId, deparment, price):
         self.name = name
         self.itemId = itemId
